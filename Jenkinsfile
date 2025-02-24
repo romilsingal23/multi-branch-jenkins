@@ -1,6 +1,16 @@
 pipeline {
     agent any
     stages {
+        stage('checkout') {
+            steps {
+                script {
+                    checkout scm
+                }
+                echo "checked out branch: ${env.GIT_BRANCH}"
+                echo "checked out branch: ${env.BRANCH_NAME}"
+            }
+        }
+        
         stage('Deploy') {
             steps {
                 script {
