@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Deploy to Production') {
             when {
-                branch 'DEV'
+                branch 'refs/remotes/origin/DEV'
             }
             steps {
                 echo 'Deploying to production...'
