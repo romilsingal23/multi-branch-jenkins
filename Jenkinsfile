@@ -11,30 +11,19 @@ pipeline {
             }
         }
 
-        stage('Build for DEV') {
-            when {
-                expression { return env.GIT_BRANCH == 'origin/DEV' }
-            }
+        stage('Build') {
             steps {
-                echo "Building for DEV environment"
-            }
-        }
-
-        stage('Build for UAT') {
-            when {
-                expression { return env.GIT_BRANCH == 'origin/UAT' }
-            }
-            steps {
-                echo "Building for UAT environment"
-            }
-        }
-
-        stage('Build for PROD') {
-            when {
-                expression { return env.GIT_BRANCH == 'origin/PROD' }
-            }
-            steps {
-                echo "Building for PROD environment"
+                script {
+                    if (env.GIT_BRANCH == 'origin/DEV') {
+                        echo "Building for DEV environment"
+                    } else if (env.GIT_BRANCH == 'origin/UAT') {
+                        echo "Building for UAT environment"
+                    } else if (env.GIT_BRANCH == 'origin/PROD') {
+                        echo "Building for PROD environment"
+                    } else {
+                        echo "Branch not recognized, skipping build."
+                    }
+                }
             }
         }
     }
