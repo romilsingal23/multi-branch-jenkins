@@ -4,7 +4,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'main') {
+                    if (env.BRANCH_NAME == 'master') {
                         echo 'Deploying to production...'
                         // Add production deployment steps
                     } else if (env.BRANCH_NAME == 'dev') {
