@@ -15,6 +15,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
+                    echo "Env Variables: ${env.inspect()}"
                     if (env.BRANCH_NAME == 'dev') {
                         echo "Running tests for DEV environment"
                     } else if (env.BRANCH_NAME == 'uat') {
