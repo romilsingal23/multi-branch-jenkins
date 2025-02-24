@@ -1,29 +1,40 @@
 pipeline {
     agent any
+
     stages {
-        stage('checkout') {
+        stage('Checkout Code') {
             steps {
+                checkout scm
                 script {
-                    checkout scm
+                    echo "Checked out code from branch: ${env.GIT_BRANCH}"
                 }
-                echo "checked out branch: ${env.GIT_BRANCH}"
-                echo "checked out branch: ${env.BRANCH_NAME}"
             }
         }
-        
-        stage('Deploy') {
+
+        stage('Build for DEV') {
+            when {
+                expression { return env.GIT_BRANCH == 'origin/DEV' }
+            }
             steps {
-                script {
-                    if (env.GIT_BRANCH == 'master') {
-                        echo 'Deploying to production...'
-                        // Add production deployment steps
-                    } else if (env.GIT_BRANCH == 'origin/DEV') {
-                        echo 'Deploying to staging...'
-                        // Add staging deployment steps
-                    } else {
-                        echo 'Skipping deployment for feature branch'
-                    }
-                }
+                echo "Building for DEV environment"
+            }
+        }
+
+        stage('Build for UAT') {
+            when {
+                expression { return env.GIT_BRANCH == 'origin/UAT' }
+            }
+            steps {
+                echo "Building for UAT environment"
+            }
+        }
+
+        stage('Build for PROD') {
+            when {
+                expression { return env.GIT_BRANCH == 'origin/PROD' }
+            }
+            steps {
+                echo "Building for PROD environment"
             }
         }
     }
