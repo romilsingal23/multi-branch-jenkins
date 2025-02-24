@@ -2,25 +2,31 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
                 checkout scm
+        
             }
         }
 
-        stage('Run Tests') {
+        stage('Build for DEV') {
+            when { branch 'dev' }
             steps {
-                script {
-                    if (env.BRANCH_NAME == 'dev') {
-                        echo "Running tests for DEV environment"
-                    } else if (env.BRANCH_NAME == 'uat') {
-                        echo "Running tests for UAT environment"
-                    } else if (env.BRANCH_NAME == 'prod') {
-                        echo "Running tests for PROD environment"
-                    } else {
-                        echo "Branch not recognized, skipping environment-specific steps"
-                    }
-                }
+                echo "Building for DEV environment"
+            }
+        }
+
+        stage('Build for UAT') {
+            when { branch 'uat' }
+            steps {
+                echo "Building for UAT environment"
+            }
+        }
+
+        stage('Build for PROD') {
+            when { branch 'prod' }
+            steps {
+                echo "Building for PROD environment"
             }
         }
     }
