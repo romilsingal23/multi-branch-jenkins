@@ -1,13 +1,19 @@
 pipeline {
     agent any
     stages {
-        stage('Deploy to Production') {
-            when {
-                branch 'origin/DEV'
-            }
+        stage('Deploy') {
             steps {
-                echo 'Deploying to production...'
-                // Add deployment steps here
+                script {
+                    if (env.BRANCH_NAME == 'main') {
+                        echo 'Deploying to production...'
+                        // Add production deployment steps
+                    } else if (env.BRANCH_NAME == 'dev') {
+                        echo 'Deploying to staging...'
+                        // Add staging deployment steps
+                    } else {
+                        echo 'Skipping deployment for feature branch'
+                    }
+                }
             }
         }
     }
